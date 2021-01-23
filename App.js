@@ -1,13 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { createContext, useContext, useState } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { Context } from './context';
+import CounterContextProvider, { CounterContext } from './ContextProvider';
+import CounterComponent from './components/CounterComponent';
+import ComponentWithConsumer from './components/ComponentWithConsumer';
+
+// const ContextState = createContext();
+// const ContextDispatch = createContext();
 
 export default function App() {
+  const [counter, setCounter] = useState(0);
+  const increment = () => setCounter((prev) => prev + 1);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Context.Provider
+      value={{
+        message: 'Hello world',
+        counter,
+        setCounter,
+        increment,
+        magicalNumber: 42,
+      }}
+    >
+      <CounterContextProvider>
+        <CounterComponent />
+        <ComponentWithConsumer />
+      </CounterContextProvider>
+    </Context.Provider>
   );
 }
 
